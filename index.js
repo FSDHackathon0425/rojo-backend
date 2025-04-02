@@ -1,4 +1,12 @@
 require("dotenv").config();
+const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("Conexión exitosa a MongoDB"))
+.catch((err) => console.error("Error conectando a MongoDB:", err));
 
 /***
  * BOT Commands
@@ -58,6 +66,66 @@ const app = express();
 
 //Hacemos que funcione el req.body
 app.use(express.json());
+
+const Menu = require("./models/Menu");
+const Pedido = require("./models/Pedido");
+//get menus
+app.get("/menus", async (req, res) => {
+  try {
+    const menus = await Menu.find();
+    res.json(menus);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener menus" });
+  }
+});
+
+// get pedidos
+app.get("/pedidos", async (req, res) => {
+  try {
+    const pedidos = await Pedido.find();
+    res.json(pedidos);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener pedidos" });
+  }
+});
+
+// patch pedidos
+app.patch("/pedidos/:id", async (req, res) => {
+  try {
+    const pedidoActualizado = await Pedido.findByIdAndUpdate(
+      req.params.id,
+      { status: "sent" },
+      { new: true }
+    );
+    if (!pedidoActualizado) {
+      return res.status(404).json({ error: "Pedido no encontrado" });
+    }
+    res.json(pedidoActualizado);
+  } catch (err) {
+    res.status(500).json({ error: "Error al actualizar pedido" });
+  }
+});
+
+// post pedios
+app.post("/pedidos", async (req, res) => {
+  const { items } = req.body;
+
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ error: "Por favor envia al menos un item en el pedido" });
+  }
+
+  try {
+    const nuevoPedido = new Pedido({
+      items,
+      status: "pendiente",
+    });
+
+    await nuevoPedido.save();
+    res.status(201).json(nuevoPedido);
+  } catch (err) {
+    res.status(500).json({ error: "Error al crear el pedido" });
+  }
+});
 
 // Arrancamos el servidor para que escuche llamadas
 app.listen(port, () => {
