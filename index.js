@@ -20,11 +20,12 @@ mongoose
 /***
  * BOT Commands
  ***/
+
 const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
-bot.on("message", (msg) => {
+bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const messageText = msg.text;
   console.log(msg);
@@ -52,6 +53,28 @@ bot.on("message", (msg) => {
 
     // Send a message with the inline keyboard
     bot.sendMessage(chatId, "Choose an option:", inlineKeyboard);
+  }
+  if (messageText === "/menus") {
+    try {
+      const menus = await Menu.find();
+      const menuMessage = menus
+        .map((menu) => `${menu.nombre} - ${menu.descripcion} - $${menu.precio}`)
+        .join("\n");
+      bot.sendMessage(chatId, menuMessage);
+    } catch (error) {
+      bot.sendMessage("Ha habido un error al obtener los menus");
+    }
+  }
+  if (messageText === "/pedidos") {
+    try {
+      const pedidos = await Pedido.find();
+      const pedidoMessage = pedidos
+        .map((pedido) => `${pedido.items} - ${pedido.status}`)
+        .join("\n");
+      bot.sendMessage(chatId, pedidoMessage);
+    } catch (error) {
+      bot.sendMessage("Ha habido un error al obtener los pedidos");
+    }
   }
 });
 
