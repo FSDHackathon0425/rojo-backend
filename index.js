@@ -2,14 +2,6 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Conexión exitosa a MongoDB"))
-  .catch((err) => console.error("Error conectando a MongoDB:", err));
-
-mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -54,6 +46,7 @@ bot.on("message", async (msg) => {
     // Send a message with the inline keyboard
     bot.sendMessage(chatId, "Choose an option:", inlineKeyboard);
   }
+
   if (messageText === "/menus") {
     try {
       const menus = await Menu.find();
