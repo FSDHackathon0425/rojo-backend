@@ -23,6 +23,14 @@ bot.on("message", (msg) => {
   const messageText = msg.text;
   console.log(msg);
 
+  const menus = [
+    {
+      id: 1,
+      name: "Menu del dia ",
+      description: "Mu rico",
+      price: 10,
+    },
+  ];
   // Process the incoming message here
   if (messageText === "/start") {
     bot.sendMessage(chatId, "Hello World!");
@@ -30,11 +38,9 @@ bot.on("message", (msg) => {
     bot.sendPhoto(chatId, photoUrl, { caption: "Here is your photo!" });
     const inlineKeyboard = {
       reply_markup: {
-        inline_keyboard: [
-          [{ text: "Option 1", callback_data: "1" }],
-          [{ text: "Option 2", callback_data: "2" }],
-          [{ text: "Option 3", callback_data: "3" }],
-        ],
+        inline_keyboard: menus.map((menu) => [
+          { text: menu.text, callback_data: menu.callback_data },
+        ]),
       },
     };
 
