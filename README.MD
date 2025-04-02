@@ -35,6 +35,8 @@ Debes crear un archivo .env en la raíz del proyecto con las credenciales de tu 
 TELEGRAM_BOT_TOKEN_1="AAAAA"
 TELEGRAM_BOT_TOKEN="BBBBB"
 MONGODB_URI="mongodb://localhost:27017/nombre_de_tu_base_de_datos"
+
+
 ```
 
 Asegúrate de reemplazar los valores de ejemplo con las credenciales reales de tu bot y la URL de conexión a MongoDB.
