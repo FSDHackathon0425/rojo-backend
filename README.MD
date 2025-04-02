@@ -32,9 +32,10 @@ npm install
 Debes crear un archivo .env en la raíz del proyecto con las credenciales de tu bot de Telegram y la conexión a MongoDB. Aquí tienes un ejemplo de cómo debería verse:
 
 ```bash
-TELEGRAM_BOT_TOKEN_1="AAAAA"
-TELEGRAM_BOT_TOKEN="BBBBB"
+TELEGRAM_BOT_TOKEN="7229122405:AAGK9xMRjnJc57saF_Z7IGMoeL7Ipg0GLZg"
 MONGODB_URI="mongodb://localhost:27017/nombre_de_tu_base_de_datos"
+
+
 ```
 
 Asegúrate de reemplazar los valores de ejemplo con las credenciales reales de tu bot y la URL de conexión a MongoDB.
