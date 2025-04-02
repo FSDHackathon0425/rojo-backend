@@ -1,15 +1,13 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("Conexión exitosa a MongoDB"))
-.catch((err) => console.error("Error conectando a MongoDB:", err));
-
-const mongoose = require("mongoose");
-require("dotenv").config();
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Conexión exitosa a MongoDB"))
+  .catch((err) => console.error("Error conectando a MongoDB:", err));
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -128,7 +126,9 @@ app.post("/pedidos", async (req, res) => {
   const { items } = req.body;
 
   if (!items || !Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({ error: "Por favor envia al menos un item en el pedido" });
+    return res
+      .status(400)
+      .json({ error: "Por favor envia al menos un item en el pedido" });
   }
 
   try {
